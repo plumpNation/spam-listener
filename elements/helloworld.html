@@ -1,0 +1,23 @@
+<element name="helloworld">
+    <template>
+        <div>Hello World</div>
+    </template>
+    <script>
+        var template;
+
+        if (this === window) {
+            return;
+        }
+
+        template = this.querySelector('template');
+
+        this.register({
+            prototype: {
+                readyCallback: function() {
+                    this.appendChild(template.content.cloneNode(true));
+                }
+            }
+        });
+
+    </script>
+</element>
