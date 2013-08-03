@@ -1,5 +1,5 @@
 <!-- A Polymer element -->
-<polymer-element name="p-helloworld">
+<polymer-element name="p-helloworld" attributes="age name color">
     <template>
         <span id="readyEl">Loading and totally unprepared...</span>
         <div style="color: {{color}};">{{name}} is {{age}} and likes {{color}}</div>
@@ -23,9 +23,9 @@
                 this.$.readyEl.innerHTML = 'Ready to rock and roll';
             },
 
-            name: 'Gavin',
-            color: 'red',
-            age: 34,
+            name: 'Fred',
+            color: 'blue',
+            age: 2,
 
             nameChanged: function () {
                 console.log('name changed');
