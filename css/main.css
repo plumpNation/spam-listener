@@ -1851,9 +1851,34 @@ body {
 .wrapper {
   margin: 20px;
 }
-#VoiceInput {
-  display: block;
-  width: 100%;
+.button-container {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  white-space: nowrap;
+  overflow: hidden;
+  word-spacing: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  height: 2.6rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background: #e5e9e8;
+  color: #000;
+  -webkit-box-shadow: inset 0 -1px #b9bcbc, 0 1px rgba(0, 0, 0, 0.95);
+  box-shadow: inset 0 -1px #b9bcbc, 0 1px rgba(0, 0, 0, 0.95);
 }
 button {
   position: relative;
@@ -1901,5 +1926,39 @@ button {
   font-weight: 500;
   text-shadow: 0 -1px rgba(0, 0, 0, 0.36);
   font-size: 1.167rem;
+  line-height: 2.6rem;
+}
+#VoiceInput {
+  display: block;
+  width: 100%;
+}
+#Transcript {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  vertical-align: top;
+  resize: none;
+  outline: none;
+  padding: var-padding--container;
+  font-size: var-font-size--textarea;
+  font-weight: 200;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  line-height: 2rem;
+  border: 1px solid #a5a8a8;
+  background-color: #e5e9e8;
+  -webkit-box-shadow: inset 0 1px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.12);
+  color: #454545;
+  font-size: var-font-size--textarea--large;
   line-height: 2.6rem;
 }

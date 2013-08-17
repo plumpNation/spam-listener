@@ -16,125 +16,136 @@
     <script>
         'use strict';
 
-        var VoiceSearch = {
-            scope: null,
-            component: null,
-            transcript: '',
+        var Utils = function () {
+                var first_char = /\S/;
 
-            'isSupported': function () {
-                return (document.createElement('input').webkitSpeech !== undefined);
-            },
-
-            'start': function (scope) {
-                if (!this.component) {
-                    this.init(scope);
-                }
-
-                this.component.start();
-                return this;
-            },
-
-            showStartButton: function () {
-                this.scope.StartButton.style.display = 'block';
-                this.scope.StopButton.style.display = 'none';
-            },
-
-            showStopButton: function () {
-                this.scope.StartButton.style.display = 'none';
-                this.scope.StopButton.style.display = 'block';
-            },
-
-            'stop': function () {
-                this.component.stop();
-                this.showStartButton();
-            },
-
-            'onStart': function (boundTo) {
-                var that = boundTo;
-                return function () {
-                    console.log('starting');
-                    that.showStopButton();
-                }
-            },
-
-            'updateTranscript': function () {
-                console.log('updating transcript');
-                this.transcript.innerHTML = this.transcript;
-            },
-
-            'updateInput': function (message) {
-                console.log('updating input');
-                console.log(message);
-                this.scope.VoiceInput.value = message;
-            },
-
-            'onResult': function (boundTo) {
-                var that = boundTo;
-                return function (e) {
-                    var i,
-                        interimTranscript;
-
-                    console.log('results:');
-                    console.log(event.results);
-
-                    for (i = event.resultIndex; i < event.results.length; ++i) {
-                        if (event.results[i].isFinal) {
-                            that.transcript += event.results[i][0].transcript;
-                            that.updateTranscript();
-
-                        } else {
-                            interimTranscript += event.results[i][0].transcript;
-                            that.updateInput(interimTranscript);
-                        }
+                return {
+                    capitalize: function (s) {
+                        return s.replace(first_char, function (m) { return m.toUpperCase(); });
                     }
+                };
+            }()),
+
+            VoiceSearch = {
+                scope                : null,
+                component            : null,
+                transcriptView       : null,
+                transcript           : '',
+
+                'isSupported': function () {
+                    return (document.createElement('input').webkitSpeech !== undefined);
+                },
+
+                'start': function (scope) {
+                    if (!this.component) {
+                        this.init(scope);
+                    }
+
+                    this.component.start();
+                    return this;
+                },
+
+                showStartButton: function () {
+                    this.scope.StartButton.style.display = 'block';
+                    this.scope.StopButton.style.display = 'none';
+                },
+
+                showStopButton: function () {
+                    this.scope.StartButton.style.display = 'none';
+                    this.scope.StopButton.style.display = 'block';
+                },
+
+                'stop': function () {
+                    this.component.stop();
+                    this.showStartButton();
+                },
+
+                'onStart': function (boundTo) {
+                    var that = boundTo;
+                    return function () {
+                        console.log('starting');
+                        that.showStopButton();
+                    };
+                },
+
+                'updateTranscript': function (message) {
+                    console.log('updating transcript');
+                    this.transcript += Utils.capitalize(message) + '. ';
+                    this.transcriptView.innerHTML = this.transcript;
+                },
+
+                'updateInput': function (message) {
+                    console.log('updating input');
+                    console.log(message);
+                    this.scope.VoiceInput.value = message;
+                },
+
+                'onResult': function (boundTo) {
+                    var that = boundTo;
+
+                    return function (e) {
+                        var i,
+                            interimTranscript = '';
+
+                        console.log('result');
+
+                        for (i = event.resultIndex; i < event.results.length; ++i) {
+                            if (event.results[i].isFinal) {
+                                that.updateTranscript(event.results[i][0].transcript);
+
+                            } else {
+                                interimTranscript += event.results[i][0].transcript || '';
+                                that.updateInput(interimTranscript);
+                            }
+                        }
+                    };
+                },
+
+                'onError': function (e) {
+                    console.error('error');
+                    if (event.error == 'no-speech') {
+                        //
+                    }
+
+                    if (event.error == 'audio-capture') {
+                        //
+                    }
+
+                    if (event.error == 'not-allowed') {
+                        //
+                    }
+                },
+
+                'onEnd': function () {
+                    console.log('ended');
+                },
+
+                'setupComponent': function () {
+                    this.component = new webkitSpeechRecognition();
+
+                    this.component.continuous     = true;
+                    this.component.interimResults = true;
+
+
+                    this.component.onstart        = this.onStart(this);
+                    this.component.onresult       = this.onResult(this);
+                    this.component.onerror        = this.onError;
+                    this.component.onend          = this.onEnd;
+                },
+
+                'init': function (webcomponent) {
+                    if (!this.isSupported()) {
+                        throw new Error('Speech input is not supported in your browser.');
+                    }
+
+                    this.scope = webcomponent.$;
+                    this.transcriptView = document.getElementById(webcomponent.transcript);
+
+                    this.setupComponent();
+
+                    return this;
                 }
-            },
-
-            'onError': function (e) {
-                console.error('error');
-                if (event.error == 'no-speech') {
-                    //
-                }
-
-                if (event.error == 'audio-capture') {
-                    //
-                }
-
-                if (event.error == 'not-allowed') {
-                    //
-                }
-            },
-
-            'onEnd': function () {
-                console.log('ended');
-            },
-
-            'setupComponent': function () {
-                this.component = new webkitSpeechRecognition();
-
-                this.component.continuous     = true;
-                this.component.interimResults = true;
-
-
-                this.component.onstart        = this.onStart(this);
-                this.component.onresult       = this.onResult(this);
-                this.component.onerror        = this.onError;
-                this.component.onend          = this.onEnd;
-            },
-
-            'init': function (webcomponent) {
-                if (!this.isSupported()) {
-                    throw new Error('Speech input is not supported in your browser.');
-                }
-
-                this.scope = webcomponent.$;
-                this.transcript = document.getElementById(webcomponent.transcript);
-
-                this.setupComponent();
-
-                return this;
-            }
-        };
+            };
 
         // second parameter is the prototype
         Polymer('p-voicesearch', {
