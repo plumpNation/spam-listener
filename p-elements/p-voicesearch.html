@@ -5,6 +5,7 @@
         <div class="input-wrapper wrapper">
             <div class="button-container container">
                 <button id="StartButton">Start</button>
+                <button id="StopButton">Stop</button>
             </div>
             <div class="input-container container">
                 <input class="topcoat-text-input--large" id="VoiceInput" placeholder="Speak to me" value="" autocomplete="off" name="{{name}}" spellcheck="{{spellcheck}}" type="{{type}}">
@@ -33,11 +34,18 @@
                 return this;
             },
 
+            'stop': function () {
+                this.component.stop();
+                this.scope.StartButton.style.display = 'block';
+                this.scope.StopButton.style.display = 'none';
+            },
+
             'onStart': function (boundTo) {
                 var that = boundTo;
                 return function () {
                     console.log('starting');
-                    that.scope.StartButton.disabled = true;
+                    that.scope.StartButton.style.display = 'none';
+                    that.scope.StopButton.style.display = 'block';
                 }
             },
 
@@ -57,6 +65,9 @@
                 return function (e) {
                     var i,
                         interimTranscript;
+
+                    console.log('results:');
+                    console.log(event.results);
 
                     for (i = event.resultIndex; i < event.results.length; ++i) {
                         if (event.results[i].isFinal) {
@@ -88,7 +99,6 @@
 
             'onEnd': function () {
                 console.log('ended');
-                this.scope.StartButton.disabled = false;
             },
 
             'setupComponent': function () {
@@ -130,8 +140,12 @@
                 //          in this Polymer element.
                 //
                 var that = this;
+                this.$.StopButton.style.display = 'none';
                 this.$.StartButton.onclick = function () {
                     VoiceSearch.start(that);
+                };
+                this.$.StopButton.onclick = function () {
+                    VoiceSearch.stop();
                 };
             },
 
