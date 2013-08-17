@@ -1,0 +1,15 @@
+{
+  "name": "speech",
+  "version": "0.0.0",
+  "description": "A web based utility to record conversations",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-less": "~0.7.0"
+  }
+}

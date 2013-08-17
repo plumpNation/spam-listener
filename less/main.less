@@ -1,0 +1,24 @@
+@import '_mixins';
+@import '../vendor/topcoat/less/topcoat-desktop-light';
+
+.wrapper {
+    margin: 20px;
+}
+
+.button-container,
+.input-container {
+    .inline-flex();
+}
+
+#VoiceInput {
+    display: block;
+    width: 100%;
+}
+
+#StartButton {
+    .topcoat-button--large--cta;
+}
+
+#Transcript {
+    .topcoat-textarea--large;
+}

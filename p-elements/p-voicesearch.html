@@ -1,0 +1,155 @@
+<!-- A Polymer element -->
+<polymer-element name="p-voicesearch" attributes="name spellcheck type">
+
+    <template>
+        <div class="input-wrapper wrapper">
+            <div class="button-container container">
+                <button id="StartButton">Start</button>
+            </div>
+            <div class="input-container container">
+                <input class="topcoat-text-input--large" id="VoiceInput" placeholder="Speak to me" value="" autocomplete="off" name="{{name}}" spellcheck="{{spellcheck}}" type="{{type}}">
+            </div>
+        </div>
+        <div class="transcript-wrapper wrapper">
+            <div class="transcript-container container">
+                <p id="Transcript"></p>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        'use strict';
+
+        var VoiceSearch = {
+            scope: null,
+            component: null,
+            transcript: '',
+
+            'isSupported': function () {
+                return (document.createElement('input').webkitSpeech !== undefined);
+            },
+
+            'start': function (scope) {
+                if (!this.component) {
+                    this.init(scope);
+                }
+
+                this.component.start();
+                return this;
+            },
+
+            'onStart': function (boundTo) {
+                var that = boundTo;
+                return function () {
+                    console.log('starting');
+                    that.scope.StartButton.disabled = true;
+                }
+            },
+
+            'updateTranscript': function () {
+                console.log('updating transcript');
+                this.scope.Transcript.innerHTML = this.transcript;
+            },
+
+            'updateInput': function (message) {
+                console.log('updating input');
+                console.log(message);
+                this.scope.VoiceInput.value = message;
+            },
+
+            'onResult': function (boundTo) {
+                var that = boundTo;
+                return function (e) {
+                    var i,
+                        interimTranscript;
+
+                    for (i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            that.transcript += event.results[i][0].transcript;
+                            that.updateTranscript();
+
+                        } else {
+                            interimTranscript += event.results[i][0].transcript;
+                            that.updateInput(interimTranscript);
+                        }
+                    }
+                }
+            },
+
+            'onError': function (e) {
+                console.error('error');
+                if (event.error == 'no-speech') {
+                    //
+                }
+
+                if (event.error == 'audio-capture') {
+                    //
+                }
+
+                if (event.error == 'not-allowed') {
+                    //
+                }
+            },
+
+            'onEnd': function () {
+                console.log('ended');
+                this.scope.StartButton.disabled = false;
+            },
+
+            'setupComponent': function () {
+                this.component = new webkitSpeechRecognition();
+
+                this.component.continuous     = true;
+                this.component.interimResults = true;
+
+
+                this.component.onstart        = this.onStart(this);
+                this.component.onresult       = this.onResult(this);
+                this.component.onerror        = this.onError;
+                this.component.onend          = this.onEnd;
+            },
+
+            'init': function (scope) {
+                if (!this.isSupported()) {
+                    throw new Error('Speech input is not supported in your browser.');
+                }
+
+                this.scope = scope;
+                console.log(this.scope);
+
+                this.setupComponent();
+
+                return this;
+            }
+        };
+
+        // second parameter is the prototype
+        Polymer('p-voicesearch', {
+            applyAuthorStyles: true,
+
+            ready: function () {
+                // this.$ seems to be all elements with an id in the template
+                //
+                // @todo    Try and find a way to use the query selector with this element.
+                //          It was possible in the normal custom element, but I can't use it
+                //          in this Polymer element.
+                //
+                var that = this;
+                console.log(this.$);
+                this.$.StartButton.onclick = function () {
+                    VoiceSearch.start(that.$);
+                };
+            },
+
+            name: 'voiceinput',
+            spellcheck: 'false',
+            type: 'text', // can be search
+
+            contents: '',
+
+            contentsChanged: function () {
+                console.log('contents changed');
+            }
+        });
+    </script>
+</polymer-element>

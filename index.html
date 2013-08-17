@@ -3,12 +3,14 @@
     <head>
         <meta charset="utf-8">
         <title>Polymer testing</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
         <script src="http://localhost/repositories/polymer-all/polymer/polymer.js"></script>
-        <link rel="import" href="elements/helloworld.html">
-        <link rel="import" href="p-elements/p-helloworld.html">
+        <link rel="import" href="p-elements/p-voicesearch.html">
     </head>
     <body>
-        <!-- <helloworld></helloworld> -->
-        <p-helloworld age="34" name="Gavin" color="red"></p-helloworld>
+        <p-voicesearch transcript="Transcript">
+        <div class="transcript-container">
+            <textarea id="Transcript" class="topcoat-textarea--large"></textarea>
+        </div>
     </body>
 </html>
