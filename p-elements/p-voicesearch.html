@@ -1,5 +1,5 @@
 <!-- A Polymer element -->
-<polymer-element name="p-voicesearch" attributes="name spellcheck type">
+<polymer-element name="p-voicesearch" attributes="transcript name spellcheck type">
 
     <template>
         <div class="input-wrapper wrapper">
@@ -8,11 +8,6 @@
             </div>
             <div class="input-container container">
                 <input class="topcoat-text-input--large" id="VoiceInput" placeholder="Speak to me" value="" autocomplete="off" name="{{name}}" spellcheck="{{spellcheck}}" type="{{type}}">
-            </div>
-        </div>
-        <div class="transcript-wrapper wrapper">
-            <div class="transcript-container container">
-                <p id="Transcript"></p>
             </div>
         </div>
     </template>
@@ -48,7 +43,7 @@
 
             'updateTranscript': function () {
                 console.log('updating transcript');
-                this.scope.Transcript.innerHTML = this.transcript;
+                this.transcript.innerHTML = this.transcript;
             },
 
             'updateInput': function (message) {
@@ -109,13 +104,13 @@
                 this.component.onend          = this.onEnd;
             },
 
-            'init': function (scope) {
+            'init': function (webcomponent) {
                 if (!this.isSupported()) {
                     throw new Error('Speech input is not supported in your browser.');
                 }
 
-                this.scope = scope;
-                console.log(this.scope);
+                this.scope = webcomponent.$;
+                this.transcript = document.getElementById(webcomponent.transcript);
 
                 this.setupComponent();
 
@@ -135,9 +130,8 @@
                 //          in this Polymer element.
                 //
                 var that = this;
-                console.log(this.$);
                 this.$.StartButton.onclick = function () {
-                    VoiceSearch.start(that.$);
+                    VoiceSearch.start(that);
                 };
             },
 

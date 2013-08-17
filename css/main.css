@@ -1,6 +1,3 @@
-.something {
-  font-size: 15px;
-}
 /**
 *
 * Copyright 2012 Adobe Systems Inc.;
@@ -1406,7 +1403,7 @@ input[type="radio"]:focus + .topcoat-radio-button:before,
   padding: 0 0 0 2.7em;
   -webkit-border-radius: 15px;
   border-radius: 15px;
-  background-image: url("../img/search.svg");
+  background-image: url("../vendor/topcoat/img/search.svg");
   background-position: 1em center;
   background-repeat: no-repeat;
   -webkit-background-size: 12px;
@@ -1723,16 +1720,16 @@ Large Textarea
 }
 @font-face {
   font-family: "Source Sans";
-  src: url("../font/SourceSansPro-Regular.otf");
+  src: url("../vendor/topcoat/font/SourceSansPro-Regular.otf");
 }
 @font-face {
   font-family: "Source Sans";
-  src: url("../font/SourceSansPro-Light.otf");
+  src: url("../vendor/topcoat/font/SourceSansPro-Light.otf");
   font-weight: 200;
 }
 @font-face {
   font-family: "Source Sans";
-  src: url("../font/SourceSansPro-Semibold.otf");
+  src: url("../vendor/topcoat/font/SourceSansPro-Semibold.otf");
   font-weight: 600;
 }
 body {
@@ -1749,7 +1746,7 @@ body {
   outline-style: none;
 }
 .topcoat-icon--menu-stack {
-  background: url("../img/hamburger_dark.svg") no-repeat;
+  background: url("../vendor/topcoat/img/hamburger_dark.svg") no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -1854,14 +1851,6 @@ body {
 .wrapper {
   margin: 20px;
 }
-.button-container,
-.input-container {
-  display: -webkit-inline-flex;
-  display: -moz-inline-flex;
-  display: -ms-inline-flex;
-  display: -o-inline-flex;
-  display: inline-flex;
-}
 #VoiceInput {
   display: block;
   width: 100%;
@@ -1912,35 +1901,5 @@ body {
   font-weight: 500;
   text-shadow: 0 -1px rgba(0, 0, 0, 0.36);
   font-size: 1.167rem;
-  line-height: 2.6rem;
-}
-#Transcript {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-background-clip: padding;
-  -moz-background-clip: padding;
-  background-clip: padding-box;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  background: transparent;
-  border: none;
-  vertical-align: top;
-  resize: none;
-  outline: none;
-  padding: var-padding--container;
-  font-size: var-font-size--textarea;
-  font-weight: 200;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  line-height: 2rem;
-  border: 1px solid #a5a8a8;
-  background-color: #e5e9e8;
-  -webkit-box-shadow: inset 0 1px rgba(0, 0, 0, 0.12);
-  box-shadow: inset 0 1px rgba(0, 0, 0, 0.12);
-  color: #454545;
-  font-size: var-font-size--textarea--large;
   line-height: 2.6rem;
 }
