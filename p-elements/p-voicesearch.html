@@ -34,18 +34,26 @@
                 return this;
             },
 
-            'stop': function () {
-                this.component.stop();
+            showStartButton: function () {
                 this.scope.StartButton.style.display = 'block';
                 this.scope.StopButton.style.display = 'none';
+            },
+
+            showStopButton: function () {
+                this.scope.StartButton.style.display = 'none';
+                this.scope.StopButton.style.display = 'block';
+            },
+
+            'stop': function () {
+                this.component.stop();
+                this.showStartButton();
             },
 
             'onStart': function (boundTo) {
                 var that = boundTo;
                 return function () {
                     console.log('starting');
-                    that.scope.StartButton.style.display = 'none';
-                    that.scope.StopButton.style.display = 'block';
+                    that.showStopButton();
                 }
             },
 
@@ -140,10 +148,15 @@
                 //          in this Polymer element.
                 //
                 var that = this;
-                this.$.StopButton.style.display = 'none';
+
+                VoiceSearch.init(this);
+
+                VoiceSearch.showStartButton();
+
                 this.$.StartButton.onclick = function () {
-                    VoiceSearch.start(that);
+                    VoiceSearch.start();
                 };
+
                 this.$.StopButton.onclick = function () {
                     VoiceSearch.stop();
                 };
