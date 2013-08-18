@@ -72,6 +72,8 @@
                     console.log('updating transcript');
                     this.transcript += Utils.capitalize(message) + '. ';
                     this.transcriptView.innerHTML = this.transcript;
+
+                    this.scope.VoiceInput.value = '';
                 },
 
                 'updateInput': function (message) {
