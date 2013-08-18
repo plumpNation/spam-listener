@@ -1,0 +1,25 @@
+<!-- A Polymer element -->
+<polymer-element name="p-pageheader" attributes="text">
+    <template>
+        <header>
+            <div class="title-container">
+                <h1>{{text}}</h1>
+            </div>
+        </header>
+    </template>
+    <script>
+        Polymer('p-pageheader', {
+            applyAuthorStyles: true,
+
+            ready: function () {
+                // this.$ seems to be all elements with an id in the template
+                //
+                // @todo    Try and find a way to use the query selector with this element.
+                //          It was possible in the normal custom element, but I can't use it
+                //          in this Polymer element.
+            },
+
+            text: 'Header'
+        });
+    </script>
+</polymer-element>
